@@ -61,4 +61,4 @@ class UserRepository():
                     all_users.append(obj.User.phone_number)
             return all_users
         except Exception as e:
-            UserRepositoryError(USER_REPOSITORY_CODE, "Failed to get user", e)
+            UserRepositoryError(USER_REPOSITORY_CODE, "Failed to get all user", e)
