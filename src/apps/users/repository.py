@@ -17,7 +17,6 @@ class UserRepository():
             )
             session.add(obj)
             session.commit()
-
         return payload.phone_number
 
     def delete(self, payload: UserGetPayload) -> str:
@@ -27,7 +26,6 @@ class UserRepository():
             if user:
                 session.delete(user)
             session.commit()
-
         return payload.phone_number
 
     def get(self, payload: UserGetPayload) -> dict:
@@ -40,3 +38,11 @@ class UserRepository():
                 "name": user.name,
                 "created_at": user.created_at
             }
+
+    def get_all(self) -> list:
+        with self.session as session:
+            all_users = list()
+            sql = select(User)
+            for obj in session.execute(sql):
+                all_users.append(obj.User.phone_number)
+        return all_users

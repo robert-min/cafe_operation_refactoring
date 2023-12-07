@@ -45,6 +45,15 @@ async def test_user_repository_can_get_user_with_valid_payload(repository):
 
 @pytest.mark.order(3)
 @pytest.mark.asyncio
+async def test_user_repository_can_get_all_user(repository):
+    # 수행 : 유저 전체 정보 조회
+    result = repository.get_all()
+
+    # 기대하는 결과 : 유저 전체 정보 수 1개 이상
+    assert len(result) >= 1
+
+@pytest.mark.order(4)
+@pytest.mark.asyncio
 async def test_user_repository_can_delete_user_with_valid_payload(repository):
     # 주어진 조건 : 유효한 휴대폰 번호
     payload = UserGetPayload(phone_number=PHONE_NUMBER)
