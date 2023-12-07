@@ -12,7 +12,7 @@ class UserRepository():
             obj = User(
                 phone_number=payload.phone_number,
                 password=payload.password,
-                name=payload.password,
+                name=payload.name,
                 created_at=payload.created_at
             )
             session.add(obj)
@@ -29,3 +29,14 @@ class UserRepository():
             session.commit()
 
         return payload.phone_number
+
+    def get(self, payload: UserGetPayload) -> dict:
+        with self.session as session:
+            sql = select(User).filter(User.phone_number == payload.phone_number)
+            user = session.execute(sql).scalar_one()
+            return {
+                "phone_number": user.phone_number,
+                "password": user.password,
+                "name": user.name,
+                "created_at": user.created_at
+            }
