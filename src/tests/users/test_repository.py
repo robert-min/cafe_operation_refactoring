@@ -2,6 +2,7 @@ import pytest
 from libs.db_manager import MySQLManager
 from apps.users.repository import UserRepository
 from apps.users.schema import UserCreatePayload, UserGetPayload
+from libs.exception import UserRepositoryError
 
 
 PHONE_NUMBER: str = "010-0000-0000"
@@ -16,7 +17,7 @@ def repository():
 
 @pytest.mark.order(1)
 @pytest.mark.asyncio
-async def test_user_repository_can_create_user_with_valid_payload(repository):
+async def test_user_repository_can_create_user_with_valid(repository):
     # 주어진 조건 : 유효한 회원가입 정보
     payload = UserCreatePayload(
         phone_number=PHONE_NUMBER,
@@ -31,7 +32,7 @@ async def test_user_repository_can_create_user_with_valid_payload(repository):
 
 @pytest.mark.order(2)
 @pytest.mark.asyncio
-async def test_user_repository_can_get_user_with_valid_payload(repository):
+async def test_user_repository_can_get_user_with_valid(repository):
     # 주어진 조건 : 유효한 휴대폰 번호
     payload = UserGetPayload(phone_number=PHONE_NUMBER)
 
@@ -42,7 +43,7 @@ async def test_user_repository_can_get_user_with_valid_payload(repository):
     assert result["phone_number"] == PHONE_NUMBER
     assert result["password"] == PASSWORD
     assert result["name"] == NAME
-
+    
 @pytest.mark.order(3)
 @pytest.mark.asyncio
 async def test_user_repository_can_get_all_user(repository):
