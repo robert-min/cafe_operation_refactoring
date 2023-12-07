@@ -4,8 +4,7 @@ import json
 
 import typing as t
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import Session, DeclarativeBase
 
 # TODO : conf 파일 별도 폴더로 관리
 libs_path: str = os.path.abspath(os.path.join(__file__, os.path.pardir))
@@ -14,7 +13,8 @@ with open(conf_file, "rt") as f:
     conf = json.load(f)
 MYSQL_CONNECTION = conf["mysql_connection"]
 
-Base = declarative_base()
+class Base(DeclarativeBase):
+    pass
 
 class MySQLManager:
     def __init__(self) -> None:
