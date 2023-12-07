@@ -1,3 +1,4 @@
+import typing as t
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from .schema import UserCreatePayload, UserGetPayload
@@ -11,7 +12,7 @@ class UserRepository():
     def __init__(self, session: Session) -> None:
         self.session = session
 
-    def create(self, payload: UserCreatePayload) -> str:
+    def create(self, payload: UserCreatePayload) -> t.Optional[str]:
         try:
             with self.session as session:
                 obj = User(
@@ -26,7 +27,7 @@ class UserRepository():
         except Exception as e:
             UserRepositoryError(USER_REPOSITORY_CODE, "Failed to create user", e)
 
-    def delete(self, payload: UserGetPayload) -> str:
+    def delete(self, payload: UserGetPayload) -> t.Optional[str]:
         try:
             with self.session as session:
                 sql = select(User).filter(User.phone_number == payload.phone_number)
@@ -38,7 +39,7 @@ class UserRepository():
         except Exception as e:
             UserRepositoryError(USER_REPOSITORY_CODE, "Failed to delete user", e)
 
-    def get(self, payload: UserGetPayload) -> dict:
+    def get(self, payload: UserGetPayload) -> t.Optional[dict]:
         try:
             with self.session as session:
                 sql = select(User).filter(User.phone_number == payload.phone_number)
@@ -52,7 +53,7 @@ class UserRepository():
         except Exception as e:
             UserRepositoryError(USER_REPOSITORY_CODE, "Failed to get user", e)
 
-    def get_all(self) -> list:
+    def get_all_phone_number(self) -> list:
         try:
             with self.session as session:
                 all_users = list()

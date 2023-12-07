@@ -48,7 +48,7 @@ async def test_user_repository_can_get_user_with_valid(repository):
 @pytest.mark.asyncio
 async def test_user_repository_can_get_all_user(repository):
     # 수행 : 유저 전체 정보 조회
-    result = repository.get_all()
+    result = repository.get_all_phone_number()
 
     # 기대하는 결과 : 유저 전체 정보 수 1개 이상
     assert len(result) >= 1

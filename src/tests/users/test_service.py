@@ -57,7 +57,7 @@ async def test_user_service_can_get_user_with_valid(service):
     assert result["password"] == PASSWORD
     assert result["name"] == NAME
 
-@pytest.mark.order(3)
+@pytest.mark.order(4)
 @pytest.mark.asyncio
 async def test_user_service_cannot_get_user_with_invalid(service):
     # 주어진 조건 : 유효한 휴대폰 번호
