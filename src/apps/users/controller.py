@@ -2,19 +2,16 @@ from fastapi import APIRouter, Depends
 from .schema import UserCreatePayload
 from .service import UserService
 from libs.db_manager import MySQLManager
+from libs.util import make_response
 from sqlalchemy.orm import Session
 
 auth = APIRouter(prefix="/auth")
-
+# TODO : ERROR handler
+# TODO : logging
 @auth.post("/signup")
 async def signup(
     payload: UserCreatePayload,
     session: Session = Depends(MySQLManager().get_session)
 ):
-    return {
-        "meta": {
-            "code": 200,
-            "message": "ok"
-        },
-        "data": UserService(session).create_user(payload)
-    }
+    resp = UserService(session).create_user(payload)
+    return make_response(str(resp))
