@@ -6,8 +6,6 @@ from libs.util import make_response
 from sqlalchemy.orm import Session
 
 auth = APIRouter(prefix="/auth")
-# TODO : ERROR handler
-# TODO : logging
 @auth.post("/signup")
 async def signup(
     payload: UserCreatePayload,
