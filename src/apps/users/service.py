@@ -1,14 +1,13 @@
 import typing as t
 from .schema import UserCreatePayload, UserGetPayload
 from .repository import UserRepository
-from libs.db_manager import MySQLManager
+from sqlalchemy.orm import Session
 from libs.exception import UserError
 from libs.encrypt import CipherManager
 
 class UserService:
-    def __init__(self) -> None:
-        db = MySQLManager()
-        self.repo = UserRepository(db.session)
+    def __init__(self, session: Session) -> None:
+        self.repo = UserRepository(session)
         self.encrypt_manager = CipherManager()
 
     def create_user(self, payload: UserCreatePayload) -> t.Optional[str]:

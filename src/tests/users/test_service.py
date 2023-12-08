@@ -1,6 +1,7 @@
 import pytest
 from apps.users.schema import UserCreatePayload, UserGetPayload
 from apps.users.service import UserService
+from libs.db_manager import MySQLManager
 from libs.exception import UserError
 
 PHONE_NUMBER: str = "010-0000-0000"
@@ -9,7 +10,8 @@ NAME: str = "kim"
 
 @pytest.fixture
 def service():
-    yield UserService()
+    session = MySQLManager().get_session()
+    yield UserService(session)
 
 @pytest.mark.order(1)
 @pytest.mark.asyncio

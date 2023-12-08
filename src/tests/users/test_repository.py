@@ -11,8 +11,8 @@ NAME: str = "kim"
 # TODO : 비동기 처리 학습 후 _loop = asyncio.get_event_loop() 문제 해결!!
 @pytest.fixture
 def repository():
-    db = MySQLManager()
-    yield UserRepository(db.session)
+    session = MySQLManager().get_session()
+    yield UserRepository(session)
 
 @pytest.mark.order(1)
 @pytest.mark.asyncio

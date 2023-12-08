@@ -15,10 +15,12 @@ class MySQLManager:
         db: str = MYSQL_CONNECTION["db"]
         SQLALCHEMY_DATABASE_URL: t.Final[str] = f"mysql+pymysql://{user}:{passwd}@{host}:{port}/{db}?charset=utf8"
 
-        engine = create_engine(
+        self.engine = create_engine(
             SQLALCHEMY_DATABASE_URL, pool_size=5, pool_recycle=100, max_overflow=10
         )
-        self.session = Session(engine)
+
+    def get_session(self):
+        return Session(self.engine)
 
 
 if __name__ == "__main__":

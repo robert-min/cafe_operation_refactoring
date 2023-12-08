@@ -1,3 +1,6 @@
 .vscode
 .venv
 __pycache__
+conf
+src/libs/conf.json
+.pytest_cache
