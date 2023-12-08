@@ -3,26 +3,31 @@ from .schema import UserCreatePayload, UserGetPayload
 from .repository import UserRepository
 from libs.db_manager import MySQLManager
 from libs.exception import UserError
+from libs.encrypt import CipherManager
 
 class UserService:
     def __init__(self) -> None:
         db = MySQLManager()
         self.repo = UserRepository(db.session)
+        self.encrypt_manager = CipherManager()
 
     def create_user(self, payload: UserCreatePayload) -> t.Optional[str]:
         if payload.phone_number in self.repo.get_all_phone_number():
             raise UserError(400, "This phone number already exists. Please log in with your existing account.")
 
-        # TODO : 비밀번호 암호화
-        return self.repo.create(payload)
+        user_info = payload.dict()
+        user_info["password"] = self.encrypt_manager.encrypt_password(user_info["password"])
+        return self.repo.create(user_info)
 
     def delete_user(self, payload: UserGetPayload) -> t.Optional[str]:
-        return self.repo.delete(payload)
+        user_id = payload.phone_number
+        return self.repo.delete(user_id)
 
     def get_user(self, payload: UserGetPayload) -> t.Optional[dict]:
-        user = self.repo.get(payload)
-        if not user:
+        user_id = payload.phone_number
+        user_info = self.repo.get(user_id)
+        if not user_info:
             raise UserError(404, "Invalid phone number. Please check your phone number.")
 
-        # TODO : 비밀번호 복호화
-        return user
+        user_info["password"] = self.encrypt_manager.decrypt_password(user_info["password"])
+        return user_info
